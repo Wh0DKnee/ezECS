@@ -5,13 +5,18 @@ EntityManager::EntityManager()
 {
 	for (size_t i = 0; i < INITIAL_POOL_SIZE; ++i)
 	{
-		freeIDs.push_back(i);
+		free_IDs.push_back(i);
 	}
 }
 
-Entity EntityManager::CreateEntity()
+Entity EntityManager::createEntity()
 {
-	Entity e = Entity(freeIDs.front());
-	freeIDs.pop_front();
+	Entity e = Entity(free_IDs.front());
+	free_IDs.pop_front();
 	return e;
+}
+
+void EntityManager::deleteEntity(Entity e)
+{
+	free_IDs.push_front(e.id);
 }

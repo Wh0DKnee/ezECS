@@ -15,8 +15,11 @@ class EntityManager
 public:
 	EntityManager();
 
-	Entity CreateEntity();
+	Entity createEntity();
+
+	// Need to unregister components before calling this.
+	void deleteEntity(Entity e);
 
 private:
-	std::deque<EntityID> freeIDs;
+	std::deque<EntityID> free_IDs;
 };

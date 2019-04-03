@@ -1,12 +1,15 @@
 #pragma once
 
+class ComponentManager;
+
 class System
 {
 public:
-	virtual void update(float delta_seconds) = 0;
+	virtual void update(ComponentManager& component_manager, float delta_seconds) = 0;
 };
 
 class MovementSystem : public System
 {
-	virtual void update(float delta_seconds) override;
+public:
+	virtual void update(ComponentManager& component_manager, float delta_seconds) override;
 };
