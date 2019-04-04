@@ -7,9 +7,10 @@ int main()
 {
 	EntityManager entity_manager;
 	Entity entity = entity_manager.createEntity();
-	ComponentManager component_manager;
+	entity.addComponent<Position>(Position(0, 0));
+	entity.addComponent<Position>(Position(2, 1));
 	MovementSystem movement_system;
-	movement_system.update(component_manager, 1);
+	movement_system.update(entity_manager, 1);
 
 	std::cout << ComponentMaskGetter<Position>::getComponentMask() << std::endl;
 	std::cout << ComponentMaskGetter<Velocity>::getComponentMask() << std::endl;

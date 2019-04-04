@@ -1,7 +1,7 @@
 #include "System.h"
-#include "Component.h"
+#include "Entity.h"
 #include <iostream>
 
-void MovementSystem::update(ComponentManager& component_manager, float delta_seconds)
+void MovementSystem::update(EntityManager& component_manager, float delta_seconds)
 {
 }

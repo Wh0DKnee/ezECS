@@ -1,10 +1,8 @@
 #pragma once
-#include <vector>
-#include <algorithm>
-#include "Entity.h"
 #include "Config.h"
 #include <bitset>
 #include <cassert>
+
 
 using ComponentMask = std::bitset<MAX_COMPONENTS>;
 
@@ -37,22 +35,17 @@ struct ComponentMaskGetter : BaseComponentMaskGetter
 
 struct Position
 {
+	Position() = default;
+	Position(float x, float y) : x(x), y(y) {}
 	float x;
 	float y;
 };
 
 struct Velocity
 {
+	Velocity() = default;
+	Velocity(float x, float y) : x(x), y(y) {}
 	float x;
 	float y;
-};
-
-class ComponentManager
-{
-public:
-	ComponentManager();
-
-	std::vector<Position> positions;
-	std::vector<Velocity> velocities;
 };
 
