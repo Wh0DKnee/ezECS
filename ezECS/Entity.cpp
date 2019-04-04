@@ -1,5 +1,6 @@
 #include "Entity.h"
 #include "Config.h"
+#include <algorithm>
 
 EntityManager::EntityManager()
 {
@@ -18,15 +19,25 @@ EntityManager::EntityManager()
 	components[ComponentMaskGetter<Velocity>::getId()] = velocity_pool;
 }
 
-Entity EntityManager::createEntity()
+Entity& EntityManager::createEntity()
 {
 	//TODO: Resize pools when free_IDs is empty and generate new free_IDs.
-	Entity e = Entity(free_IDs.front(), *this);
+	entities.emplace_back(free_IDs.front());
 	free_IDs.pop_front();
-	return e;
+	return entities.back();
 }
 
 void EntityManager::deleteEntity(Entity e)
 {
 	free_IDs.push_front(e.id);
+	auto it = std::find(entities.begin(), entities.end(), e);
+	if (it != entities.end())
+	{
+		entities.erase(it);
+	}
+}
+
+bool Entity::hasComponents(ComponentMask required_components_mask) const
+{
+	return (component_mask & required_components_mask).count() == required_components_mask.count();
 }

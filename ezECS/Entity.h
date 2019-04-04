@@ -14,62 +14,82 @@ using EntityID = int64_t;
 
 struct Entity
 {
-	Entity(EntityID i, EntityManager& em) : id(i), entity_manager(em) {}
+	Entity(EntityID id) : id(id){}
 	EntityID id;
 
 	// bitset that keeps track of what components an entity has
 	ComponentMask component_mask;
 
-	EntityManager& entity_manager;
-
 	template<typename T>
-	bool hasComponent();
+	bool hasComponent() const;
 
-	template<typename T>
-	void addComponent(T component);
+	bool hasComponents(ComponentMask required_components_mask) const;
 };
+
+inline bool operator ==(const Entity& lhs, const Entity& rhs)
+{
+	return lhs.id == rhs.id;
+}
 
 class EntityManager
 {
 public:
 	EntityManager();
 
-	Entity createEntity();
+	Entity& createEntity();
 
 	// Need to unregister components before calling this.
 	void deleteEntity(Entity e);
 
 	template<typename T>
-	void addComponent(Entity entity, T component);
+	void addComponent(Entity& entity, T component);
+
+	template<typename T>
+	T getComponent(Entity& entity);
+
+	std::vector<Entity>& getEntities() { return entities; }
+
+	template<typename T>
+	std::shared_ptr<Pool<T>> getComponentPool();
 
 private:
 	// A given component pool can be found in the vector at the component's id.
 	std::vector<std::shared_ptr<PoolBase>> components;
 
 	std::deque<EntityID> free_IDs;
+
+	std::vector<Entity> entities;
 };
 
 template<typename T>
-bool Entity::hasComponent()
+bool Entity::hasComponent() const
 {
 	return (ComponentMaskGetter<T>::getComponentMask() & component_mask).any();
 }
 
 template<typename T>
-void Entity::addComponent(T component)
+inline T EntityManager::getComponent(Entity& entity)
 {
-	if (hasComponent<T>()) 
+	// TODO: don't assert but handle this case.
+	assert(entity.component_mask.test(ComponentMaskGetter<T>::getId()));
+	return getComponentPool<T>()->data[entity.id];
+}
+
+template<typename T>
+void EntityManager::addComponent(Entity& entity, T component)
+{
+	if (entity.hasComponent<T>())
 	{
 		std::cout << "This entity already has this component. Having multiple instances of a component is not supported currently." << std::endl;
 		return;
 	}
-	component_mask |= ComponentMaskGetter<T>::getComponentMask();
-	entity_manager.addComponent<T>(*this, component);
+	entity.component_mask |= ComponentMaskGetter<T>::getComponentMask();
+	assert(components[ComponentMaskGetter<T>::getId()] != nullptr);
+	std::static_pointer_cast<Pool<T>>(components[ComponentMaskGetter<T>::getId()])->data[entity.id] = component;
 }
 
 template<typename T>
-void EntityManager::addComponent(Entity entity, T component)
+inline std::shared_ptr<Pool<T>> EntityManager::getComponentPool()
 {
-	assert(components[ComponentMaskGetter<T>::getId()] != nullptr);
-	std::static_pointer_cast<Pool<T>>(components[ComponentMaskGetter<T>::getId()])->data[entity.id] = component;
+	return std::static_pointer_cast<Pool<T>>(components[ComponentMaskGetter<T>::getId()]);
 }
