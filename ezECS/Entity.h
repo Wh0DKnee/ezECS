@@ -10,7 +10,7 @@
 
 class EntityManager;
 
-using EntityID = int64_t;
+using EntityID = unsigned int;
 
 struct Entity
 {
@@ -84,8 +84,9 @@ void EntityManager::addComponent(Entity& entity, T component)
 		return;
 	}
 	entity.component_mask |= ComponentMaskGetter<T>::getComponentMask();
-	assert(components[ComponentMaskGetter<T>::getId()] != nullptr);
-	std::static_pointer_cast<Pool<T>>(components[ComponentMaskGetter<T>::getId()])->data[entity.id] = component;
+	std::shared_ptr<Pool<T>> component_pool = getComponentPool<T>();
+	assert(component_pool != nullptr);
+	component_pool->data[entity.id] = component;
 }
 
 template<typename T>
