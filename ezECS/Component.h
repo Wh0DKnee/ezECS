@@ -49,3 +49,10 @@ struct Velocity
 	float y;
 };
 
+struct Circle
+{
+	Circle() = default;
+	Circle(float radius) : radius(radius) {}
+
+	float radius;
+};
