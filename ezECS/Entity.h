@@ -38,8 +38,7 @@ public:
 
 	Entity& createEntity();
 
-	// Need to unregister components before calling this.
-	void deleteEntity(Entity e);
+	void deleteEntity(const Entity& e);
 
 	template<typename T>
 	void addComponent(Entity& entity, T component);

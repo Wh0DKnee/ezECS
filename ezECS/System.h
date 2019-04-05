@@ -19,14 +19,6 @@ private:
 	ComponentMask component_mask;
 };
 
-class MovementSystem : public System
-{
-public:
-	MovementSystem();
-
-	virtual void update(EntityManager& entity_manager, float delta_seconds) override;
-};
-
 template<typename T>
 void System::requireComponent()
 {

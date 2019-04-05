@@ -27,7 +27,7 @@ Entity& EntityManager::createEntity()
 	return entities.back();
 }
 
-void EntityManager::deleteEntity(Entity e)
+void EntityManager::deleteEntity(const Entity& e)
 {
 	free_IDs.push_front(e.id);
 	auto it = std::find(entities.begin(), entities.end(), e);
