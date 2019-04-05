@@ -44,7 +44,7 @@ public:
 	void addComponent(Entity& entity, T component);
 
 	template<typename T>
-	T getComponent(Entity& entity);
+	T& getComponent(Entity& entity);
 
 	std::vector<Entity>& getEntities() { return entities; }
 
@@ -53,7 +53,9 @@ public:
 
 private:
 	// A given component pool can be found in the vector at the component's id.
-	std::vector<std::shared_ptr<PoolBase>> components;
+	// For example, the Pool<PositionComponent> will be at ComponentMaskGetter<PositionComponent>::getId()
+	// in the component_pools.
+	std::vector<std::shared_ptr<PoolBase>> component_pools;
 
 	std::deque<EntityID> free_IDs;
 
@@ -67,7 +69,7 @@ bool Entity::hasComponent() const
 }
 
 template<typename T>
-inline T EntityManager::getComponent(Entity& entity)
+inline T& EntityManager::getComponent(Entity& entity)
 {
 	// TODO: don't assert but handle this case.
 	assert(entity.component_mask.test(ComponentMaskGetter<T>::getId()));
@@ -91,5 +93,5 @@ void EntityManager::addComponent(Entity& entity, T component)
 template<typename T>
 inline std::shared_ptr<Pool<T>> EntityManager::getComponentPool()
 {
-	return std::static_pointer_cast<Pool<T>>(components[ComponentMaskGetter<T>::getId()]);
+	return std::static_pointer_cast<Pool<T>>(component_pools[ComponentMaskGetter<T>::getId()]);
 }

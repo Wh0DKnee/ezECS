@@ -9,14 +9,14 @@ EntityManager::EntityManager()
 		free_IDs.push_back(i);
 	}
 
-	components.resize(MAX_COMPONENTS);
+	component_pools.resize(MAX_COMPONENTS);
 	auto position_pool = std::make_shared<Pool<Position>>();
 	position_pool->data.resize(INITIAL_POOL_SIZE);
-	components[ComponentMaskGetter<Position>::getId()] = position_pool;
+	component_pools[ComponentMaskGetter<Position>::getId()] = position_pool;
 
 	auto velocity_pool = std::make_shared<Pool<Velocity>>();
 	velocity_pool->data.resize(INITIAL_POOL_SIZE);
-	components[ComponentMaskGetter<Velocity>::getId()] = velocity_pool;
+	component_pools[ComponentMaskGetter<Velocity>::getId()] = velocity_pool;
 }
 
 Entity& EntityManager::createEntity()

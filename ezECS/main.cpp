@@ -9,16 +9,18 @@ public:
 	MovementSystem()
 	{
 		requireComponent<Position>();
-		//requireComponent<Velocity>();
+		requireComponent<Velocity>();
 	}
 
 	virtual void update(EntityManager& entity_manager, float delta_seconds) override
 	{
-		std::shared_ptr<Pool<Position>> position_pool = entity_manager.getComponentPool<Position>();
 		for (auto& entity : getMatchingEntities(entity_manager))
 		{
-			position_pool->data[entity.id].x += 1.f * delta_seconds;
-			position_pool->data[entity.id].y += 2.f * delta_seconds;
+			Position& pos = entity_manager.getComponent<Position>(entity);
+			const Velocity& velocity = entity_manager.getComponent<Velocity>(entity);
+
+			pos.x += velocity.x * delta_seconds;
+			pos.y += velocity.y * delta_seconds;
 		}
 	}
 };
@@ -28,7 +30,7 @@ int main()
 	EntityManager entity_manager;
 	Entity& entity = entity_manager.createEntity();
 	entity_manager.addComponent(entity, Position(0, 0));
-	entity_manager.addComponent(entity, Position(2, 1));
+	entity_manager.addComponent(entity, Velocity(1, 1));
 	MovementSystem movement_system;
 	for (size_t i = 0; i < 10; ++i)
 	{
