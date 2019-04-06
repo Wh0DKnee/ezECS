@@ -113,6 +113,31 @@ struct BounceSystem : public System
 	const sf::RenderTarget& render_target;
 };
 
+void spawnRandomCircles(EntityManager& entity_manager, const unsigned int window_width, const unsigned int window_height)
+{
+	static const int num_circles = 100;
+	static const int min_radius = 3;
+	static const int max_radius = 50;
+	static const int min_velocity_x = 100;
+	static const int max_velocity_x = 1000;
+	static const int min_velocity_y = 100;
+	static const int max_velocity_y = 1000;
+
+	float velocity_x;
+	float velocity_y;
+
+	srand(static_cast<unsigned int>(time(nullptr)));
+	for (int i = 0; i < num_circles; ++i)
+	{
+		Entity& entity = entity_manager.createEntity();
+		entity_manager.addComponent(entity, Position(static_cast<float>(rand() % window_width), static_cast<float>(rand() % window_height)));
+		velocity_x = static_cast<float>(rand() % max_velocity_x + min_velocity_x);
+		velocity_y = static_cast<float>(rand() % max_velocity_y + min_velocity_y);
+		entity_manager.addComponent(entity, Velocity(velocity_x, velocity_y));
+		entity_manager.addComponent(entity, Circle(static_cast<float>(rand() % max_radius + min_radius)));
+	}
+}
+
 int main()
 {
 	const unsigned int window_width = 800;
@@ -124,22 +149,7 @@ int main()
 	entity_manager.registerComponent<Velocity>();
 	entity_manager.registerComponent<Circle>();
 
-	const int num_circles = 100;
-	const int min_radius = 3;
-	const int max_radius = 50;
-	const int min_velocity_x = 100;
-	const int max_velocity_x = 1000;
-	const int min_velocity_y = 100;
-	const int max_velocity_y = 1000;
-
-	srand(time(nullptr));
-	for (int i = 0; i < num_circles; ++i)
-	{
-		Entity& entity = entity_manager.createEntity();
-		entity_manager.addComponent(entity, Position(rand() % window_width, rand() % window_height));
-		entity_manager.addComponent(entity, Velocity(rand() % max_velocity_x + min_velocity_x, rand() % max_velocity_y + min_velocity_y));
-		entity_manager.addComponent(entity, Circle(rand() % max_radius + min_radius));
-	}
+	spawnRandomCircles(entity_manager, window_width, window_height);
 
 	MovementSystem movement_system;
 	RenderSystem render_system(window);
