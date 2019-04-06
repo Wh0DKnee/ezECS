@@ -32,27 +32,3 @@ struct ComponentMaskGetter : BaseComponentMaskGetter
 		return mask;
 	}
 };
-
-struct Position
-{
-	Position() = default;
-	Position(float x, float y) : x(x), y(y) {}
-	float x;
-	float y;
-};
-
-struct Velocity
-{
-	Velocity() = default;
-	Velocity(float x, float y) : x(x), y(y) {}
-	float x;
-	float y;
-};
-
-struct Circle
-{
-	Circle() = default;
-	Circle(float radius) : radius(radius) {}
-
-	float radius;
-};

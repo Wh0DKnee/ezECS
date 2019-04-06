@@ -51,6 +51,9 @@ public:
 	template<typename T>
 	std::shared_ptr<Pool<T>> getComponentPool();
 
+	template<typename T>
+	void registerComponent();
+
 private:
 	// A given component pool can be found in the vector at the component's id.
 	// For example, the Pool<PositionComponent> will be at ComponentMaskGetter<PositionComponent>::getId()
@@ -94,4 +97,13 @@ template<typename T>
 inline std::shared_ptr<Pool<T>> EntityManager::getComponentPool()
 {
 	return std::static_pointer_cast<Pool<T>>(component_pools[ComponentMaskGetter<T>::getId()]);
+}
+
+template<typename T>
+inline void EntityManager::registerComponent()
+{
+	auto pool = std::make_shared<Pool<T>>();
+	pool->data.resize(INITIAL_POOL_SIZE);
+	BaseComponentMaskGetter::Id component_id = ComponentMaskGetter<T>::getId();
+	component_pools[component_id] = pool;
 }

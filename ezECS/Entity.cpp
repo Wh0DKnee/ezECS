@@ -10,20 +10,6 @@ EntityManager::EntityManager()
 	}
 
 	component_pools.resize(MAX_COMPONENTS);
-
-	// TODO: Find a way to automate this, so we don't have to jump into here
-	// every time we add a new component type.
-	auto position_pool = std::make_shared<Pool<Position>>();
-	position_pool->data.resize(INITIAL_POOL_SIZE);
-	component_pools[ComponentMaskGetter<Position>::getId()] = position_pool;
-
-	auto velocity_pool = std::make_shared<Pool<Velocity>>();
-	velocity_pool->data.resize(INITIAL_POOL_SIZE);
-	component_pools[ComponentMaskGetter<Velocity>::getId()] = velocity_pool;
-
-	auto circle_pool = std::make_shared<Pool<Circle>>();
-	circle_pool->data.resize(INITIAL_POOL_SIZE);
-	component_pools[ComponentMaskGetter<Circle>::getId()] = circle_pool;
 }
 
 Entity& EntityManager::createEntity()
