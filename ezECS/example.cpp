@@ -6,6 +6,10 @@
 #include "System.h"
 #include <SFML/Graphics.hpp>
 
+/*
+	Simple example that draws some circles and has them bounce around.
+*/
+
 struct Position
 {
 	Position() = default;
@@ -142,7 +146,7 @@ int main()
 {
 	const unsigned int window_width = 800;
 	const unsigned int window_height = 600;
-	sf::RenderWindow window(sf::VideoMode(800, 600), "Bouncing Circles");
+	sf::RenderWindow window(sf::VideoMode(window_width, window_height), "Bouncing Circles");
 
 	EntityManager entity_manager;
 	entity_manager.registerComponent<Position>();

@@ -12,6 +12,7 @@ class EntityManager;
 
 using EntityID = unsigned int;
 
+// An entity is an ID. We also keep track of what components an entity has with a bitmask.
 struct Entity
 {
 	Entity(EntityID id) : id(id){}
@@ -43,8 +44,13 @@ public:
 	template<typename T>
 	void addComponent(Entity& entity, T component);
 
+	// NOTE: Only call this if you know that the entity has this component.
+	// If you do not know, call getComponentSafe() instead.
 	template<typename T>
 	T& getComponent(Entity& entity);
+
+	template<typename T>
+	T* getComponentSafe(Entity& entity);
 
 	std::vector<Entity>& getEntities() { return entities; }
 
@@ -72,11 +78,25 @@ bool Entity::hasComponent() const
 }
 
 template<typename T>
-inline T& EntityManager::getComponent(Entity& entity)
+T& EntityManager::getComponent(Entity& entity)
 {
-	// TODO: don't assert but handle this case.
 	assert(entity.component_mask.test(ComponentMaskGetter<T>::getId()));
 	return getComponentPool<T>()->data[entity.id];
+}
+
+template<typename T>
+T* EntityManager::getComponentSafe(Entity & entity)
+{
+	auto pool = getComponentPool<T>();
+	if (pool == nullptr)
+	{
+		return nullptr;
+	}
+	if (entity.id >= pool->data.size())
+	{
+		return nullptr;
+	}
+	return pool->data[entity.id];
 }
 
 template<typename T>
