@@ -7,7 +7,10 @@
 #include <SFML/Graphics.hpp>
 
 /*
-	Simple example that draws some circles and has them bounce around.
+	This project is a simple Entity Component System. Have a look around!
+
+	In this file, you will find a simple example that uses the system to draw 
+	some circles and has them bounce off the edge of the window.
 */
 
 struct Position

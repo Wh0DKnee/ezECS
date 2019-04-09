@@ -14,6 +14,8 @@ protected:
 	static Id next_id;
 };
 
+// Assigns each type that this is templated with a unique id.
+// This is used for components only.
 template<typename T>
 struct ComponentMaskGetter : BaseComponentMaskGetter
 {

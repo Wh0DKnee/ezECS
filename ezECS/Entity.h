@@ -154,8 +154,6 @@ inline void EntityManager::registerComponent()
 		games and for study purposes.
 	*/
 	auto pool = std::make_shared<Pool<T>>();
-	// TODO: Once we've done the TODO in createEntity, this will also need to change to cope with
-	// an increase in entities beyond INITIAL_POOL_SIZE.
 	pool->data.resize(current_pool_size); 
 	BaseComponentMaskGetter::Id component_id = ComponentMaskGetter<T>::getId();
 	component_pools[component_id] = pool;

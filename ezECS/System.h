@@ -5,6 +5,7 @@
 
 class EntityManager;
 
+// The base system class. Your systems should inherit from this.
 class System
 {
 public:
