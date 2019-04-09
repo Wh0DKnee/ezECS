@@ -1,7 +1,5 @@
 #pragma once
 
-enum
-{
-	INITIAL_POOL_SIZE = 100,
-	MAX_COMPONENTS = 64
-};
+
+static const int INITIAL_POOL_SIZE = 100;
+static const int MAX_COMPONENTS = 64;

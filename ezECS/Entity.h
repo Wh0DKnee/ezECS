@@ -57,6 +57,8 @@ public:
 	template<typename T>
 	std::shared_ptr<Pool<T>> getComponentPool();
 
+	// Allocates a component pool for the specified component type. 
+	// Call this before adding this component to any entities.
 	template<typename T>
 	void registerComponent();
 
@@ -109,6 +111,11 @@ void EntityManager::addComponent(Entity& entity, T component)
 	}
 	entity.component_mask |= ComponentMaskGetter<T>::getComponentMask();
 	std::shared_ptr<Pool<T>> component_pool = getComponentPool<T>();
+	if (component_pool == nullptr)
+	{
+		registerComponent<T>();
+		component_pool = getComponentPool()<T>();
+	}
 	assert(component_pool != nullptr);
 	component_pool->data[entity.id] = component;
 }
@@ -122,8 +129,28 @@ inline std::shared_ptr<Pool<T>> EntityManager::getComponentPool()
 template<typename T>
 inline void EntityManager::registerComponent()
 {
+	/*
+		Currently, a component pool is allocated even if only one instance of this component exists.
+		This means that for components that are not frequently used, there will be quite a lot of
+		wasted memory in its component pool. The entity ID is used as in index into the pool to find
+		that entity's component, if it has it.
+
+		This approach means that systems that require only a single component will be able to iterate
+		over all of these components very fast, as they are contiguous in memory.
+
+		Storing components in an ECS is not a trivial problem, and usually needs optimization on a case-by-case basis.
+		For example: If we find that system X that requires components A, B and C (that are conceptually related in a way)
+		occupies a large portion of our frame time, it is worth considering to join A, B and C into one component, 
+		so that system X can iterate over them significantly faster, as they would then be contiguous in memory and we 
+		would be very cache-friendly.
+
+		I will try different pooling strategies in the future, but for now this simple approach will suffice for very basic
+		games and for study purposes.
+	*/
 	auto pool = std::make_shared<Pool<T>>();
-	pool->data.resize(INITIAL_POOL_SIZE);
+	// TODO: Once we've done the TODO in createEntity, this will also need to change to cope with
+	// an increase in entities beyond INITIAL_POOL_SIZE.
+	pool->data.resize(INITIAL_POOL_SIZE); 
 	BaseComponentMaskGetter::Id component_id = ComponentMaskGetter<T>::getId();
 	component_pools[component_id] = pool;
 }
