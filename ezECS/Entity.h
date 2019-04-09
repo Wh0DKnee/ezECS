@@ -67,9 +67,16 @@ private:
 	// in the component_pools.
 	std::vector<std::shared_ptr<PoolBase>> component_pools;
 
-	std::deque<EntityID> free_IDs;
+	std::deque<EntityID> free_ids;
 
 	std::vector<Entity> entities;
+
+	// grows as needed
+	int current_pool_size;
+
+	int next_free_id;
+
+	void resizePoolsAndGenerateFreeIds();
 };
 
 template<typename T>
@@ -149,7 +156,7 @@ inline void EntityManager::registerComponent()
 	auto pool = std::make_shared<Pool<T>>();
 	// TODO: Once we've done the TODO in createEntity, this will also need to change to cope with
 	// an increase in entities beyond INITIAL_POOL_SIZE.
-	pool->data.resize(INITIAL_POOL_SIZE); 
+	pool->data.resize(current_pool_size); 
 	BaseComponentMaskGetter::Id component_id = ComponentMaskGetter<T>::getId();
 	component_pools[component_id] = pool;
 }
