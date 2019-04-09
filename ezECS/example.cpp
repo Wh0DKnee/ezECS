@@ -12,7 +12,7 @@
 
 struct Position
 {
-	Position() = default;
+	Position() : x(0.f), y(0.f) {}
 	Position(float x, float y) : x(x), y(y) {}
 	float x;
 	float y;
@@ -20,7 +20,7 @@ struct Position
 
 struct Velocity
 {
-	Velocity() = default;
+	Velocity() : x(0.f), y(0.f) {}
 	Velocity(float x, float y) : x(x), y(y) {}
 	float x;
 	float y;
@@ -28,7 +28,7 @@ struct Velocity
 
 struct Circle
 {
-	Circle() = default;
+	Circle() : radius(0.f) {}
 	Circle(float radius) : radius(radius) {}
 
 	float radius;
