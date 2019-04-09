@@ -58,7 +58,6 @@ public:
 	std::shared_ptr<Pool<T>> getComponentPool();
 
 	// Allocates a component pool for the specified component type. 
-	// Call this before adding this component to any entities.
 	template<typename T>
 	void registerComponent();
 
@@ -114,7 +113,7 @@ void EntityManager::addComponent(Entity& entity, T component)
 	if (component_pool == nullptr)
 	{
 		registerComponent<T>();
-		component_pool = getComponentPool()<T>();
+		component_pool = getComponentPool<T>();
 	}
 	assert(component_pool != nullptr);
 	component_pool->data[entity.id] = component;

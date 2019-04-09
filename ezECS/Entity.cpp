@@ -14,8 +14,8 @@ EntityManager::EntityManager()
 
 Entity& EntityManager::createEntity()
 {
-	//TODO: Resize pools when free_IDs is empty and generate new free_IDs.
-	assert(!free_IDs.empty());
+	//TODO: Don't assert. Resize pools when free_IDs is empty and generate new free_IDs.
+	assert(!free_IDs.empty() && "Maximum number of entities reached.");
 	entities.emplace_back(free_IDs.front());
 	free_IDs.pop_front();
 	return entities.back();

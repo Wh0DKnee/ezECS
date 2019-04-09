@@ -122,10 +122,10 @@ void spawnRandomCircles(EntityManager& entity_manager, const unsigned int window
 	const int num_circles = 100;
 	const int min_radius = 3;
 	const int max_radius = 50;
-	const int min_velocity_x = 100;
-	const int max_velocity_x = 1000;
-	const int min_velocity_y = 100;
-	const int max_velocity_y = 1000;
+	const int min_velocity_x = 50;
+	const int max_velocity_x = 200;
+	const int min_velocity_y = 50;
+	const int max_velocity_y = 200;
 
 	float velocity_x;
 	float velocity_y;
@@ -175,7 +175,7 @@ int main()
 		window.clear();
 		sf::Time delta_time = clock.restart();
 		float delta_seconds = delta_time.asSeconds();
-		std::cout << delta_seconds << std::endl;
+		std::cout << "frame time: " << delta_seconds << " seconds" << std::endl;
 
 		movement_system.update(entity_manager, delta_seconds);
 		render_system.update(entity_manager, delta_seconds);
