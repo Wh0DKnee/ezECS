@@ -8,8 +8,6 @@
 #include "Pool.h"
 #include "Component.h"
 
-class EntityManager;
-
 using EntityID = unsigned int;
 
 // An entity is an ID. We also keep track of what components an entity has with a bitmask.
