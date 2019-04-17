@@ -24,7 +24,6 @@ struct MovementSystem : public System
 	MovementSystem()
 	{
 		requireComponent<Position>();
-		requireComponent<Velocity>();
 	}
 
 	virtual void update(EntityManager& entity_manager, float delta_seconds) override
@@ -32,10 +31,8 @@ struct MovementSystem : public System
 		for (auto& entity : getMatchingEntities(entity_manager))
 		{
 			Position& pos = entity_manager.getComponent<Position>(entity);
-			const Velocity& velocity = entity_manager.getComponent<Velocity>(entity);
-
-			pos.x += velocity.x * delta_seconds;
-			pos.y += velocity.y * delta_seconds;
+			pos.x += 1.f;
+			pos.y += 1.f;
 		}
 	}
 };
@@ -47,7 +44,6 @@ EntityManager entity_manager;
 
 Entity& entity = entity_manager.createEntity();
 entity_manager.addComponent(entity, Position(0.f, 0.f));
-entity_manager.addComponent(entity, Velocity(10.f, 10.f));
 
 MovementSystem movement_system;
 
