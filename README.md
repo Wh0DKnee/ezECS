@@ -53,3 +53,6 @@ for(int i = 0; i < 10; ++i)
   movement_system.update(entity_manager, delta_time);
 }
 ```
+
+## TODO
+* Rewrite component pool to use [sparse sets](https://programmingpraxis.com/2012/03/09/sparse-sets/)
