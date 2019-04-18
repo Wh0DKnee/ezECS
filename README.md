@@ -56,3 +56,4 @@ for(int i = 0; i < 10; ++i)
 
 ## TODO
 * Rewrite component pool to use [sparse sets](https://programmingpraxis.com/2012/03/09/sparse-sets/)
+* Add event system
