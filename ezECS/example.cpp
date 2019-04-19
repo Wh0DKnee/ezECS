@@ -147,11 +147,6 @@ void spawnRandomCircles(EntityManager& entity_manager, const unsigned int window
 
 int main()
 {
-	std::cout << ComponentMaskGetter<Position>::getComponentMask() << std::endl;
-	std::cout << ComponentMaskGetter<Position>::getComponentMask() << std::endl;
-	std::cout << ComponentMaskGetter<Position>::getComponentMask() << std::endl;
-	std::cout << ComponentMaskGetter<Circle>::getComponentMask() << std::endl;
-
 	const unsigned int window_width = 800;
 	const unsigned int window_height = 600;
 	sf::RenderWindow window(sf::VideoMode(window_width, window_height), "Bouncing Circles");

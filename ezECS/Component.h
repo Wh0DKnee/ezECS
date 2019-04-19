@@ -28,7 +28,7 @@ struct ComponentMaskGetter : BaseComponentMaskGetter
 
 	static ComponentMask getComponentMask()
 	{
-		static auto mask = ComponentMask().set(getId());
+		static ComponentMask mask = ComponentMask().set(getId());
 		return mask;
 	}
 };
