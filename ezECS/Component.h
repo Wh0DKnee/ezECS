@@ -21,8 +21,7 @@ struct ComponentMaskGetter : BaseComponentMaskGetter
 {
 	static Id getId()
 	{
-		static Id id = next_id;
-		++next_id;
+		static Id id = next_id++;
 		assert(id < MAX_COMPONENTS);
 		return id;
 	}
