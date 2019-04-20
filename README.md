@@ -9,8 +9,7 @@ The goal of this project is to provide a light-weight and easy to use system, wh
 ```c++
 struct Position
 {
-	Position() : x(0.f), y(0.f) {}
-	Position(float x, float y) : x(x), y(y) {}
+	Position(float x = 0.f, float y = 0.f) : x(x), y(y) {}
 	float x;
 	float y;
 };
