@@ -66,12 +66,9 @@ private:
 
 	std::vector<Entity> entities_;
 
-	// grows as needed
-	int current_pool_size_;
-
 	int next_free_id_;
 
-	void resizePoolsAndGenerateFreeIds();
+	void generateFreeIds();
 };
 
 template<typename T>

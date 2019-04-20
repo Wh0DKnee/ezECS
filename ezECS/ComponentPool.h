@@ -1,4 +1,5 @@
 #pragma once
+#include <cassert>
 #include "SparseSet.h"
 #include "CommonTypes.h"
 
@@ -31,6 +32,7 @@ public:
 	{
 		data_.push_back(component);
 		sparse_set_.add(id);
+		assert(sparse_set_.size() == data_.size());
 	}
 
 	TComponent& getComponent(EntityID entity_id) { return data_[sparse_set_.sparse_[entity_id]]; }
