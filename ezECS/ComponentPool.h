@@ -22,6 +22,14 @@ private:
 
 public:
 
+	using iterator = typename std::vector<TComponent>::iterator;
+	using const_iterator = typename std::vector<TComponent>::const_iterator;
+
+	iterator begin() { return data_.begin(); }
+	const_iterator begin() const { return data_.cbegin(); }
+	iterator end() { return data_.end(); }
+	const_iterator end() const { return data_.cend(); }
+
 	void reserve(size_t new_capacity)
 	{
 		data_.reserve(new_capacity);

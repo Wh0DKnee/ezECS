@@ -15,24 +15,21 @@
 
 struct Position
 {
-	Position() : x(0.f), y(0.f) {}
-	Position(float x, float y) : x(x), y(y) {}
+	Position(float x = 0.f, float y = 0.f) : x(x), y(y) {}
 	float x;
 	float y;
 };
 
 struct Velocity
 {
-	Velocity() : x(0.f), y(0.f) {}
-	Velocity(float x, float y) : x(x), y(y) {}
+	Velocity(float x = 0.f, float y = 0.f) : x(x), y(y) {}
 	float x;
 	float y;
 };
 
 struct Circle
 {
-	Circle() : radius(0.f) {}
-	Circle(float radius) : radius(radius) {}
+	Circle(float radius = 0.f) : radius(radius) {}
 
 	float radius;
 };

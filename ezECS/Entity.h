@@ -54,7 +54,7 @@ public:
 	template<typename T>
 	std::shared_ptr<ComponentPool<T>> getComponentPool();
 
-	// Allocates a component pool for the specified component type. 
+	// Initializes a component pool for the specified component type. 
 	template<typename T>
 	std::shared_ptr<ComponentPool<T>> initializeComponentPool();
 

@@ -10,6 +10,8 @@ class System
 {
 public:
 	virtual void update(EntityManager& entity_manager, float delta_seconds) = 0;
+
+	// Call this function in the constructor of your system for every component type that the system will read or write!
 	template<typename T>
 	void requireComponent();
 
@@ -23,5 +25,5 @@ private:
 template<typename T>
 void System::requireComponent()
 {
-	component_mask_ |= ComponentMaskGetter<T>::getComponentMask();
+	component_mask_.set(ComponentMaskGetter<T>::getId());
 }
