@@ -1,7 +1,7 @@
 # ezECS
 ezECS is an [entity component system](https://en.wikipedia.org/wiki/Entity_component_system). 
 
-The goal of this project is to provide a light-weight and easy to use system, while keeping cache-friendliness in mind. Specifically, this means that components are contiguous in memory, ensuring fast iteration over components of a given type.
+The goal of this project is to provide a light-weight and easy to use system, while keeping cache-friendliness in mind. Specifically, this means that components are contiguous in memory, ensuring fast iteration over components of a given type. This is achieved using a [sparse sets](https://programmingpraxis.com/2012/03/09/sparse-sets/) in conjuction with the actual component pool.
 
 ## Usage
 
@@ -55,5 +55,6 @@ for(int i = 0; i < 10; ++i)
 ```
 
 ## TODO
-* Rewrite component pool to use [sparse sets](https://programmingpraxis.com/2012/03/09/sparse-sets/)
+* ~~Rewrite component pool to use [sparse sets](https://programmingpraxis.com/2012/03/09/sparse-sets/)~~
+* Give system base class a function to iterate over a component type directly
 * Add event system
