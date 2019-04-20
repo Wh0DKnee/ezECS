@@ -17,11 +17,11 @@ protected:
 	std::vector<Entity> getMatchingEntities(EntityManager& entity_manager);
 
 private:
-	ComponentMask component_mask;
+	ComponentMask component_mask_;
 };
 
 template<typename T>
 void System::requireComponent()
 {
-	component_mask |= ComponentMaskGetter<T>::getComponentMask();
+	component_mask_ |= ComponentMaskGetter<T>::getComponentMask();
 }

@@ -11,7 +11,7 @@ struct BaseComponentMaskGetter
 	using Id = uint8_t;
 
 protected:
-	static Id next_id;
+	static Id next_id_;
 };
 
 // Assigns each type that this is templated with a unique id.
@@ -21,7 +21,7 @@ struct ComponentMaskGetter : BaseComponentMaskGetter
 {
 	static Id getId()
 	{
-		static Id id = next_id++;
+		static Id id = next_id_++;
 		assert(id < MAX_COMPONENTS);
 		return id;
 	}

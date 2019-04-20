@@ -30,6 +30,15 @@
     <ClInclude Include="Pool.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SparseSet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CommonTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentPool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="System.cpp">
@@ -42,6 +51,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="example.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentPool.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

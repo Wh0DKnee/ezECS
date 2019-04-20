@@ -5,10 +5,9 @@
 #include <memory>
 #include <cassert>
 #include <iostream>
-#include "Pool.h"
+#include "ComponentPool.h"
 #include "Component.h"
-
-using EntityID = unsigned int;
+#include "CommonTypes.h"
 
 // An entity is an ID. We also keep track of what components an entity has with a bitmask.
 struct Entity
@@ -50,29 +49,27 @@ public:
 	template<typename T>
 	T* getComponentSafe(Entity& entity);
 
-	std::vector<Entity>& getEntities() { return entities; }
+	std::vector<Entity>& getEntities() { return entities_; }
 
 	template<typename T>
-	std::shared_ptr<Pool<T>> getComponentPool();
+	std::shared_ptr<ComponentPool<T>> getComponentPool();
 
 	// Allocates a component pool for the specified component type. 
 	template<typename T>
-	void registerComponent();
+	std::shared_ptr<ComponentPool<T>> initializeComponentPool();
 
 private:
-	// A given component pool can be found in the vector at the component's id.
-	// For example, the Pool<PositionComponent> will be at ComponentMaskGetter<PositionComponent>::getId()
-	// in the component_pools.
-	std::vector<std::shared_ptr<PoolBase>> component_pools;
 
-	std::deque<EntityID> free_ids;
+	std::vector<std::shared_ptr<PoolBase>> component_pools_;
 
-	std::vector<Entity> entities;
+	std::deque<EntityID> free_ids_;
+
+	std::vector<Entity> entities_;
 
 	// grows as needed
-	int current_pool_size;
+	int current_pool_size_;
 
-	int next_free_id;
+	int next_free_id_;
 
 	void resizePoolsAndGenerateFreeIds();
 };
@@ -87,7 +84,7 @@ template<typename T>
 T& EntityManager::getComponent(Entity& entity)
 {
 	assert(entity.component_mask.test(ComponentMaskGetter<T>::getId()));
-	return getComponentPool<T>()->data[entity.id];
+	return getComponentPool<T>()->getComponent(entity.id);
 }
 
 template<typename T>
@@ -114,45 +111,26 @@ void EntityManager::addComponent(Entity& entity, T component)
 		return;
 	}
 	entity.component_mask |= ComponentMaskGetter<T>::getComponentMask();
-	std::shared_ptr<Pool<T>> component_pool = getComponentPool<T>();
+	std::shared_ptr<ComponentPool<T>> component_pool = getComponentPool<T>();
 	if (component_pool == nullptr)
 	{
-		registerComponent<T>();
-		component_pool = getComponentPool<T>();
+		component_pool = initializeComponentPool<T>();
 	}
 	assert(component_pool != nullptr);
-	component_pool->data[entity.id] = component;
+	component_pool->push_back(entity.id, component);
 }
 
 template<typename T>
-inline std::shared_ptr<Pool<T>> EntityManager::getComponentPool()
+inline std::shared_ptr<ComponentPool<T>> EntityManager::getComponentPool()
 {
-	return std::static_pointer_cast<Pool<T>>(component_pools[ComponentMaskGetter<T>::getId()]);
+	return std::static_pointer_cast<ComponentPool<T>>(component_pools_[ComponentMaskGetter<T>::getId()]);
 }
 
 template<typename T>
-inline void EntityManager::registerComponent()
+std::shared_ptr<ComponentPool<T>> EntityManager::initializeComponentPool()
 {
-	/*
-		Currently, a component pool is allocated even if only one instance of this component exists.
-		This means that for components that are not frequently used, there will be quite a lot of
-		wasted memory in its component pool. The entity ID is used as in index into the pool to find
-		that entity's component, if it has it.
-
-		This approach means that systems that require only a single component will be able to iterate
-		over all of these components very fast, as they are contiguous in memory.
-
-		Storing components in an ECS is not a trivial problem, and usually needs optimization on a case-by-case basis.
-		For example: If we find that system X that requires components A, B and C (that are conceptually related in a way)
-		occupies a large portion of our frame time, it is worth considering to join A, B and C into one component, 
-		so that system X can iterate over them significantly faster, as they would then be contiguous in memory and we 
-		would be very cache-friendly.
-
-		I will try different pooling strategies in the future, but for now this simple approach will suffice for very basic
-		games and for study purposes.
-	*/
-	auto pool = std::make_shared<Pool<T>>();
-	pool->data.resize(current_pool_size); 
+	auto pool = std::make_shared<ComponentPool<T>>();
 	BaseComponentMaskGetter::Id component_id = ComponentMaskGetter<T>::getId();
-	component_pools[component_id] = pool;
+	component_pools_[component_id] = pool;
+	return pool;
 }

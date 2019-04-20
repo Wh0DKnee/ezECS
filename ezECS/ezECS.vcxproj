@@ -123,10 +123,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CommonTypes.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Pool.h" />
+    <ClInclude Include="SparseSet.h" />
+    <ClInclude Include="ComponentPool.h" />
     <ClInclude Include="System.h" />
   </ItemGroup>
   <ItemGroup>
@@ -136,6 +139,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="ComponentPool.cpp" />
     <ClCompile Include="System.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

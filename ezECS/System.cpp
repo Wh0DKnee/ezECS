@@ -6,7 +6,7 @@ std::vector<Entity> System::getMatchingEntities(EntityManager & entity_manager)
 	std::vector<Entity> entities;
 	for (Entity& e : entity_manager.getEntities())
 	{
-		if (e.hasComponents(component_mask))
+		if (e.hasComponents(component_mask_))
 		{
 			entities.push_back(e);
 		}

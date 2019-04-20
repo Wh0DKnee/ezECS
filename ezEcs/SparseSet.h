@@ -13,35 +13,35 @@ class SparseSet
 
 private:
 
-	std::vector<T> dense;
-	std::vector<T> sparse;
+	std::vector<T> dense_;
+	std::vector<T> sparse_;
 
-	size_t size = 0;		// current number of elements
-	size_t capacity = 0;
+	size_t size_ = 0;		// current number of elements
+	size_t capacity_ = 0;
 
 public:
 
-	size_t size() const { return size; }
+	size_t size() const { return size_; }
 
-	size_t capacity() const { return capacity; }
+	size_t capacity() const { return capacity_; }
 
-	bool empty() const { return size == 0; }
+	bool empty() const { return size_ == 0; }
 
-	bool clear() { size = 0; }
+	bool clear() { size_ = 0; }
 
 	void reserve(size_t new_capacity)
 	{
-		if (new_capacity > capacity)
+		if (new_capacity > capacity_)
 		{
-			dense.resize(new_capacity);
-			sparse.resize(new_capacity);
-			capacity = new_capacity;
+			dense_.resize(new_capacity);
+			sparse_.resize(new_capacity);
+			capacity_ = new_capacity;
 		}
 	}
 
 	bool contains(const T& val) const
 	{
-		return val < capacity && sparse[val] < size && dense[sparse[val]] == val;
+		return val < capacity_ && sparse_[val] < size_ && dense_[sparse_[val]] == val;
 	}
 
 	void add(const T& val)
@@ -51,23 +51,25 @@ public:
 			return;
 		}
 
-		if (val > capacity)
+		if (val >= capacity_)
 		{
 			reserve(val + 1);
 		}
 
-		sparse[val] = size;
-		dense[size] = val;
-		++size;
+		sparse_[val] = size_;
+		dense_[size_] = val;
+		++size_;
 	}
 
 	void erase(const T& val)
 	{
 		if (contains(val))
 		{
-			dense[sparse[val]] = dense[size - 1];	// overwrite to-be-deleted element with current last element
-			sparse[dense[size - 1]] = sparse[val];  // update corresponding index in sparse vector
-			--size;
+			dense_[sparse_[val]] = dense_[size_ - 1];	// overwrite to-be-deleted element with current last element
+			sparse_[dense_[size_ - 1]] = sparse_[val];  // update corresponding index in sparse vector
+			--size_;
 		}
 	}
+
+	template<typename> friend class ComponentPool;
 };
