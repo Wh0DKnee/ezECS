@@ -56,4 +56,5 @@ for(int i = 0; i < 10; ++i)
 ## TODO
 * ~~Rewrite component pool to use [sparse sets](https://programmingpraxis.com/2012/03/09/sparse-sets/)~~
 * Give system base class a function to iterate over a component type directly
+* Add support to remove components
 * Add event system
