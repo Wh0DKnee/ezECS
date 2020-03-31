@@ -48,8 +48,8 @@ entity_manager.addComponent(entity, Position(0.f, 0.f));
 
 MovementSystem movement_system;
 
-float delta_time = 1.f;
-for(int i = 0; i < 10; ++i)
+float delta_time = 1.f; // for simplicity's sake
+for(int i = 0; i < 10; ++i) // update 10 times
 {
   movement_system.update(entity_manager, delta_time);
 }
